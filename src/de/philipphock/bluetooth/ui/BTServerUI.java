@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -34,10 +36,10 @@ public class BTServerUI extends JFrame {
 		statusText.setEditable(false);
 		
 		//======= recv text =======
-		recvText = new JTextArea();
+		recvText = new JTextArea("r");
 		
 		//send text
-		sendText = new JTextArea();
+		sendText = new JTextArea("s");
 		
 		
 		//======= left panel ===========
@@ -54,7 +56,6 @@ public class BTServerUI extends JFrame {
 				statusPanel.setBorder(statusBorder);
 				JScrollPane statusTextScrollPane = new JScrollPane(statusText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 				statusPanel.add(statusTextScrollPane,BorderLayout.CENTER);
-				statusPanel.setBackground(Color.RED);
 				
 				
 				left.add(statusPanel);
@@ -64,7 +65,6 @@ public class BTServerUI extends JFrame {
 				JPanel btservicePanel = new JPanel();
 				TitledBorder btserviceBorder = BorderFactory.createTitledBorder("BT Service");
 				btservicePanel.setBorder(btserviceBorder);
-				btservicePanel.setBackground(Color.BLUE);
 				
 				left.add(btservicePanel);
 			}
@@ -73,7 +73,6 @@ public class BTServerUI extends JFrame {
 				JPanel controlPanel = new JPanel();
 				TitledBorder controlBorder = BorderFactory.createTitledBorder("Server Control");
 				controlPanel.setBorder(controlBorder);
-				controlPanel.setBackground(Color.GREEN);
 				
 				left.add(controlPanel);
 			}
@@ -87,18 +86,41 @@ public class BTServerUI extends JFrame {
 		//======= message panel ==========	
 		{
 			JPanel messagePanel = new JPanel(new GridLayout(2, 1)); 
-			messagePanel.setBackground(Color.YELLOW);
-			
-			
 			//======= recv panel ==========
 			{
 				JPanel recvPanel = new JPanel(new BorderLayout());
 				//======= recv head panel ==========
 				{
+					JPanel recvHeadPanel = new JPanel(new GridLayout(1,2));
+					recvHeadPanel.add(new JLabel("recv:"));
+					recvHeadPanel.add(new JButton("clear"));
 					
+					recvPanel.add(recvHeadPanel,BorderLayout.NORTH);
+					JScrollPane recvTextScrollPane = new JScrollPane(recvText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+					recvPanel.add(recvTextScrollPane,BorderLayout.CENTER);
 				}
-				recvPanel.add(recvText,BorderLayout.CENTER);
+				
+				messagePanel.add(recvPanel);
 			}
+			
+			//======= send panel ==========
+			{
+				JPanel sendPanel = new JPanel(new BorderLayout());
+				//======= recv head panel ==========
+				{
+					JPanel sendHeadPanel = new JPanel(new GridLayout(1,1));
+					sendHeadPanel.add(new JButton("clear"));
+					
+					JScrollPane sendTextScrollPane = new JScrollPane(sendText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+					sendPanel.add(sendTextScrollPane,BorderLayout.CENTER);
+					sendPanel.add(sendHeadPanel,BorderLayout.SOUTH);
+				}
+				
+				messagePanel.add(sendPanel);
+			}
+			
+			
+			
 			
 			getContentPane().add(messagePanel,BorderLayout.CENTER);
 		}
