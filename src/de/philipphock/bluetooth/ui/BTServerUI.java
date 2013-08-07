@@ -3,15 +3,20 @@ package de.philipphock.bluetooth.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
+
+import de.philipphock.bluetooth.service.BluetoothService;
 
 
 
@@ -22,8 +27,9 @@ public class BTServerUI extends JFrame {
 	private final JTextArea statusText;
 	private final JTextArea recvText;
 	private final JTextArea sendText;	
+	private final JList<BluetoothService> btserviceList;
 	
-	public BTServerUI() {
+	public BTServerUI(Vector<BluetoothService> btservices) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -34,11 +40,17 @@ public class BTServerUI extends JFrame {
 		statusText = new JTextArea();
 		statusText.setEditable(false);
 		
-		//======= recv text =======
-		recvText = new JTextArea("r");
+		//======= recv text =========
+		recvText = new JTextArea("");
+		recvText.setEditable(false);
 		
-		//send text
-		sendText = new JTextArea("s");
+		//======= send text =========
+		sendText = new JTextArea("");
+		
+		//====== BTServicelist ======
+		
+		btserviceList = new JList<BluetoothService>(btservices);
+		btserviceList.setSelectedIndex(0);
 		
 		
 		//======= left panel ===========
@@ -61,9 +73,10 @@ public class BTServerUI extends JFrame {
 			}
 			//======= bt service panel ===========		
 			{
-				JPanel btservicePanel = new JPanel();
+				JPanel btservicePanel = new JPanel(new BorderLayout());
 				TitledBorder btserviceBorder = BorderFactory.createTitledBorder("BT Service");
 				btservicePanel.setBorder(btserviceBorder);
+				btservicePanel.add(btserviceList,BorderLayout.CENTER);
 				
 				left.add(btservicePanel);
 			}
@@ -108,7 +121,7 @@ public class BTServerUI extends JFrame {
 				//======= recv head panel ==========
 				{
 					JPanel sendHeadPanel = new JPanel(new GridLayout(1,1));
-					sendHeadPanel.add(new JButton("clear"));
+					sendHeadPanel.add(new JButton("send"));
 					
 					JScrollPane sendTextScrollPane = new JScrollPane(sendText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 					sendPanel.add(sendTextScrollPane,BorderLayout.CENTER);

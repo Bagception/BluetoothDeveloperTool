@@ -23,7 +23,7 @@ public class BluetoothServiceEntity implements BluetoothService{
 	@Override
 	public String toString() {
 		
-		return name + " - " + uuid;
+		return name;
 	}
 
 }
