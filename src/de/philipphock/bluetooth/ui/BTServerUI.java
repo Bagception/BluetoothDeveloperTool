@@ -19,6 +19,8 @@ public class BTServerUI extends JFrame {
 	private static final long serialVersionUID = 2495452297340253126L;
 
 	private final JTextArea statusText;
+	private final JTextArea recvText;
+	private final JTextArea sendText;	
 	
 	public BTServerUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,9 +28,16 @@ public class BTServerUI extends JFrame {
 		setLocationRelativeTo(null);
 		
 		// initialization of class variables
+		
+		//======= status text =======
 		statusText = new JTextArea();
 		statusText.setEditable(false);
 		
+		//======= recv text =======
+		recvText = new JTextArea();
+		
+		//send text
+		sendText = new JTextArea();
 		
 		
 		//======= left panel ===========
@@ -77,11 +86,21 @@ public class BTServerUI extends JFrame {
 		
 		//======= message panel ==========	
 		{
-		JPanel message = new JPanel(); 
-		message.setBackground(Color.YELLOW);
-		
-		
-		getContentPane().add(message,BorderLayout.CENTER);
+			JPanel messagePanel = new JPanel(new GridLayout(2, 1)); 
+			messagePanel.setBackground(Color.YELLOW);
+			
+			
+			//======= recv panel ==========
+			{
+				JPanel recvPanel = new JPanel(new BorderLayout());
+				//======= recv head panel ==========
+				{
+					
+				}
+				recvPanel.add(recvText,BorderLayout.CENTER);
+			}
+			
+			getContentPane().add(messagePanel,BorderLayout.CENTER);
 		}
 		
 		setVisible(true);
