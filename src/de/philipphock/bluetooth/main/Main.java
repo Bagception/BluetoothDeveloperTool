@@ -1,6 +1,6 @@
 package de.philipphock.bluetooth.main;
 
-import de.philipphock.bluetooth.ui.MainControl;
+import de.philipphock.bluetooth.ui.BTServerUI;
 
 public class Main {
 
@@ -11,7 +11,7 @@ public class Main {
 	
 	
 	public static void bootstrap(){
-		new MainControl();
+		new BTServerUI();
 	}
 
 }
