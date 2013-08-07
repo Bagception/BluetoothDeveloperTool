@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,11 +15,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
+import de.philipphock.bluetooth.controller.BTServerUIActionCommands;
+import de.philipphock.bluetooth.controller.BTServerUIButtonController;
 import de.philipphock.bluetooth.service.BluetoothService;
 
 
 
-public class BTServerUI extends JFrame {
+public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 
 	private static final long serialVersionUID = 2495452297340253126L;
 
@@ -29,7 +30,7 @@ public class BTServerUI extends JFrame {
 	private final JTextArea sendText;	
 	private final JList<BluetoothService> btserviceList;
 	
-	public BTServerUI(Vector<BluetoothService> btservices) {
+	public BTServerUI(BTServerUIButtonController buttoncontroller,Vector<BluetoothService> btservices) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -85,6 +86,10 @@ public class BTServerUI extends JFrame {
 				JPanel controlPanel = new JPanel();
 				TitledBorder controlBorder = BorderFactory.createTitledBorder("Server Control");
 				controlPanel.setBorder(controlBorder);
+				JButton startServerButton = new JButton("start server");
+				startServerButton.addActionListener(buttoncontroller);
+				startServerButton.setActionCommand(BTServerUIActionCommands.SERVER_START);
+				controlPanel.add(startServerButton);
 				
 				left.add(controlPanel);
 			}
@@ -121,7 +126,11 @@ public class BTServerUI extends JFrame {
 				//======= recv head panel ==========
 				{
 					JPanel sendHeadPanel = new JPanel(new GridLayout(1,1));
-					sendHeadPanel.add(new JButton("send"));
+					JButton sendButton = new JButton("send");
+					sendButton.addActionListener(buttoncontroller);
+					sendButton.setActionCommand(BTServerUIActionCommands.SEND);
+					
+					sendHeadPanel.add(sendButton);
 					
 					JScrollPane sendTextScrollPane = new JScrollPane(sendText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 					sendPanel.add(sendTextScrollPane,BorderLayout.CENTER);

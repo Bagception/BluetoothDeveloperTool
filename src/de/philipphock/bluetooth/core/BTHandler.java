@@ -3,10 +3,7 @@ package de.philipphock.bluetooth.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import javax.bluetooth.ServiceRecord;
 import javax.microedition.io.StreamConnection;
-
 import com.intel.bluetooth.NotImplementedError;
 
 
