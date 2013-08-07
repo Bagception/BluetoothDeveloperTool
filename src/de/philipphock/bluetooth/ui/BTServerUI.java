@@ -3,6 +3,8 @@ package de.philipphock.bluetooth.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -110,7 +112,14 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 				{
 					JPanel recvHeadPanel = new JPanel(new GridLayout(1,2));
 					recvHeadPanel.add(new JLabel("recv:"));
-					recvHeadPanel.add(new JButton("clear"));
+					JButton clearButton = new JButton("clear");
+					recvHeadPanel.add(clearButton);
+					clearButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							recvText.setText("");
+						}
+					});
 					
 					recvPanel.add(recvHeadPanel,BorderLayout.NORTH);
 					JScrollPane recvTextScrollPane = new JScrollPane(recvText,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

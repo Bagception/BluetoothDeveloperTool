@@ -2,11 +2,12 @@ package de.philipphock.bluetooth.controller;
 
 import java.util.Vector;
 import javax.swing.JOptionPane;
+
+import de.philipphock.bluetooth.core.BTServer;
 import de.philipphock.bluetooth.service.BluetoothService;
 import de.philipphock.bluetooth.ui.BTServerUI;
 public class BTServerController {
-
-	
+	private BTServer bt_server;
 	public BTServerController() {
 		
 	}
@@ -22,6 +23,9 @@ public class BTServerController {
 	
 	
 	public void startServer(){
-		
+		if (bt_server != null){
+			bt_server.getBTServerState().removeAllListeners();
+		}
+		//bt_server = new BTServer(handler, service)
 	}
 }
