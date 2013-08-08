@@ -107,7 +107,6 @@ public class BTServer implements Runnable {
 	}
 	
 	public void broadCast(String s){
-		System.out.println("BTSERVER: sendboradcast");
 		for (BTHandler h:this.handler){
 			h.send(s.getBytes());
 		}

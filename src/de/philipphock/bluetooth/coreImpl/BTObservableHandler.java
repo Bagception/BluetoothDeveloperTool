@@ -24,6 +24,7 @@ public  class BTObservableHandler extends BTHandler  {
 	public void recv(byte[] b,int cnt) {
 		String s = new String(b,0,cnt);
 		observable.notifyAllListener(BTObservableHandlerHelper.RECV,s);
+		
 	}
 	
 	
