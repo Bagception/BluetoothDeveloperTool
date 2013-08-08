@@ -8,13 +8,13 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 
-import de.philipphock.bluetooth.core.mvc.BTServerState;
+import de.philipphock.bluetooth.core.mvc.observable.BTServerStateObservable;
 import de.philipphock.bluetooth.exceptions.ServerAlreadyStartedException;
 import de.philipphock.bluetooth.service.BluetoothService;
 
 public class BTServer implements Runnable {
 
-	private final BTServerState serverState;
+	private final BTServerStateObservable serverState;
 	// private ArrayBlockingQueue<Runnable> queue;
 
 	private boolean active = true;
@@ -25,16 +25,17 @@ public class BTServer implements Runnable {
 	// private ThreadPoolExecutor threadPool;
 	private boolean alreadyStarted = false;
 
-	private BTHandler handler;
-
-	public BTServer(BTHandler handler, BluetoothService service) {
-		this.handler = handler;
+	private BTHandlerFactory handlerFactory; 
+	
+	public BTServer(BTHandlerFactory handlerFactory, BluetoothService service) {
+		this.handlerFactory = handlerFactory;
 		this.btservice = service;
-		this.serverState = new BTServerState();
+		this.serverState = new BTServerStateObservable();
 
 	}
 
-	public BTServerState getBTServerState() {
+	
+	public BTServerStateObservable getBTServerState() {
 		return serverState;
 	}
 
@@ -68,11 +69,13 @@ public class BTServer implements Runnable {
 					.open("btspp://localhost:" + btservice.getServiceUUID()
 							+ ";name=" + btservice.getServiceName());
 
-			serverState.notifyAllListener(BTServerState.SERVER_LISTENING);
+			serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
 
 			while (active) {
 				try {
 					con = (StreamConnection) service.acceptAndOpen();
+					
+					BTHandler handler = handlerFactory.createHandler();
 					handler.init(con);
 					// threadPool.execute(handler); //for multiple connection
 					// handles
@@ -85,9 +88,9 @@ public class BTServer implements Runnable {
 				}
 
 			}
-			serverState.notifyAllListener(BTServerState.SERVER_STOPPED);
+			serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
 		} catch (IOException e1) {
-			serverState.notifyAllListener(BTServerState.SERVER_ERROR, e1);
+			serverState.notifyAllListener(BTServerStateObservable.SERVER_ERROR, e1);
 			return;
 		}
 

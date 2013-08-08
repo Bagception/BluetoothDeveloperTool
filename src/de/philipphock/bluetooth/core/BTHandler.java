@@ -8,7 +8,7 @@ import com.intel.bluetooth.NotImplementedError;
 
 
 
-public class BTHandler implements Runnable{
+public abstract class BTHandler implements Runnable{
 	protected StreamConnection con;
 	protected boolean listening=true;
 	private InputStream is;
@@ -27,6 +27,10 @@ public class BTHandler implements Runnable{
  		
 		
 	}
+	
+	protected abstract void onShutdown();
+	protected abstract void onInit();
+	protected abstract void recv(byte[] b,int len);
 	
 	@Override
 	public void run() {
@@ -50,23 +54,21 @@ public class BTHandler implements Runnable{
 		
 	}
 	
-	public synchronized void init(){
+	private synchronized void init(){
 		instances++;
-		
-		
+		onInit();
 	}
 	
-	public synchronized void shutdown(){
+	private synchronized void shutdown(){
 		instances--;
 		
 		if (instances<1){
 			//Main.control.stateServerListening();
 		}
+		onShutdown();
 	}
 	
-	public void recv(byte[] b,int len){
-		throw new NotImplementedError();
-	}
+	
 
 	public void send(byte[] b){
         try {
@@ -89,5 +91,6 @@ public class BTHandler implements Runnable{
 		}
 	}
 	
+
 	
 }

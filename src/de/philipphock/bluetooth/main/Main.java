@@ -11,8 +11,7 @@ public class Main {
 	
 	
 	public static void bootstrap(){
-		BTServerController btserverctrl = new BTServerController();
-		btserverctrl.initGui();
+		new BTServerController();
 	}
 
 }

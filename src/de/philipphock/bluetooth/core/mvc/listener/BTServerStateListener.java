@@ -1,4 +1,4 @@
-package de.philipphock.bluetooth.core.mvc;
+package de.philipphock.bluetooth.core.mvc.listener;
 
 public interface BTServerStateListener {
 

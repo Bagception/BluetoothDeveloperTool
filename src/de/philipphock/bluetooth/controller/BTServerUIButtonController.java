@@ -13,8 +13,11 @@ public class BTServerUIButtonController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+		
 		switch(e.getActionCommand()){
+			case BTServerUIActionCommands.SERVER_START:
+				mainController.startServer();
+				break;
 		}
 		
 	}

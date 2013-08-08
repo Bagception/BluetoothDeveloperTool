@@ -19,6 +19,7 @@ import javax.swing.border.TitledBorder;
 
 import de.philipphock.bluetooth.controller.BTServerUIActionCommands;
 import de.philipphock.bluetooth.controller.BTServerUIButtonController;
+import de.philipphock.bluetooth.core.mvc.listener.BTServerStateListener;
 import de.philipphock.bluetooth.service.BluetoothService;
 
 
@@ -157,5 +158,15 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 		
 		setVisible(true);
 	}
+
+	
+	public BluetoothService getBluetoothService(){
+		return this.btserviceList.getSelectedValue();
+	}
+	
+	public void addStatus(String txt){
+		this.statusText.append(txt);
+	}
+
 
 }
