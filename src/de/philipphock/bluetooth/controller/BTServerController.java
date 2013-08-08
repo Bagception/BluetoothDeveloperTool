@@ -52,6 +52,7 @@ public class BTServerController {
 			bt_server.listen();
 		} catch (IOException | ServerAlreadyStartedException e) {
 			e.printStackTrace();
+			serverUI.addStatus(e.getMessage());
 		}
 	}
 

@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 import de.philipphock.bluetooth.controller.BTServerUIActionCommands;
 import de.philipphock.bluetooth.controller.BTServerUIButtonController;
 import de.philipphock.bluetooth.service.BluetoothService;
+import de.philipphock.lib.JTextAreaAutoScroll;
 
 
 
@@ -42,15 +43,17 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 		// initialization of class variables
 		
 		//======= status text =======
-		statusText = new JTextArea();
+		statusText = new JTextAreaAutoScroll();
 		statusText.setEditable(false);
+		statusText.setLineWrap(true);
 		
 		//======= recv text =========
-		recvText = new JTextArea("");
+		recvText = new JTextAreaAutoScroll("");
 		recvText.setEditable(false);
+		recvText.setLineWrap(true);
 		
 		//======= send text =========
-		sendText = new JTextArea("");
+		sendText = new JTextAreaAutoScroll("");
 		
 		//====== BTServicelist ======
 		
@@ -62,7 +65,7 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 		{	
 			JPanel left = new JPanel();
 			left.setLayout(new GridLayout(3, 1));
-			left.setPreferredSize(new Dimension((int)(this.getWidth()*0.3), 0));
+			left.setPreferredSize(new Dimension((int)(this.getWidth()*0.4), 0));
 			
 			
 			//======= status panel ===========
@@ -180,7 +183,7 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 	}
 	
 	public void serverStarted(){
-		startStopServerButton.setText("Start stop");
+		startStopServerButton.setText("Stop server");
 		startStopServerButton.setActionCommand(BTServerUIActionCommands.SERVER_STOP);
 	}
 	

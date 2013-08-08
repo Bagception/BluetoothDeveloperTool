@@ -35,7 +35,7 @@ public class BTServer implements Runnable {
 		this.btservice = service;
 		this.serverState = new BTServerStateObservable();
 		this.handler = new Vector<>();
-
+		
 	}
 
 	
@@ -49,7 +49,12 @@ public class BTServer implements Runnable {
 		}
 		// queue = new ArrayBlockingQueue<Runnable>(10);
 		// threadPool = new ThreadPoolExecutor(1,1,10,TimeUnit.SECONDS,queue);
-		LocalDevice.getLocalDevice().setDiscoverable(DiscoveryAgent.GIAC);
+		try{
+			LocalDevice.getLocalDevice().setDiscoverable(DiscoveryAgent.GIAC);			
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+		
 		serverState.notifyAllListener(BTServerStateObservable.SERVER_STARTED);
 		alreadyStarted = true;
 
@@ -62,9 +67,14 @@ public class BTServer implements Runnable {
 		serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void stop() {
 		// threadPool.shutdown();
 		serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
+		Vector<BTHandler> clonedHander =(Vector<BTHandler>) this.handler.clone();
+		for(BTHandler h:clonedHander){
+			h.stop();
+		}
 	}
 
 	@Override
