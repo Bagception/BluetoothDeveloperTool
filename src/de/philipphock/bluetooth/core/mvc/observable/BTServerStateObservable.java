@@ -15,7 +15,6 @@ public class BTServerStateObservable extends GenericObservable<BTServerStateList
 
 	@Override
 	protected void onNotify(BTServerStateListener listener, int event, Object o) {
-		System.out.println("notify Serverstate " + event);
 		if ((SERVER_STARTED & event)>0){
 			listener.serverStarted();
 		}

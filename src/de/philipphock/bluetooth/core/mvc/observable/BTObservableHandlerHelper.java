@@ -11,8 +11,6 @@ public class BTObservableHandlerHelper extends GenericObservable<BTObservableHan
 
 	@Override
 	public void onNotify(BTObservableHandlerListener listener, int event, Object o) {
-		
-		System.out.println("notify handler");
 		if ((CONNECTION_ESTABLISEHD & event)>0){
 			listener.connEstablished();
 		}
