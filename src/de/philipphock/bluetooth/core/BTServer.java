@@ -84,6 +84,8 @@ public class BTServer implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//bt_unclosable_bug workaround
+		serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
 	}
 
 	@Override
@@ -116,7 +118,12 @@ public class BTServer implements Runnable {
 				}
 
 			}
-			serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
+			//TODO
+			//actually here we would call serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
+			//but due to a bug, we cannot close the inputstream in BTHandler, therefore, the stream never stops until the remote client quits the connection
+			//so we ignore this, by setting serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED); in stop()
+			//but keep in mind that the thread is still open
+			//we will refer this as bt_unclosable_bug 
 		} catch (IOException e1) {
 			serverState.notifyAllListener(BTServerStateObservable.SERVER_ERROR, e1);
 			return;
@@ -125,6 +132,7 @@ public class BTServer implements Runnable {
 	}
 
 	public void handlerShutdown(BTHandler handler){
+		//due to bt_unclosable_bug, this is called after the client quits the connection
 		System.out.println("handler removed "+handler);
 		this.handler.remove(handler);
 	}
