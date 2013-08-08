@@ -12,24 +12,30 @@ public class BTServerStateListenerImpl implements BTServerStateListener{
 	@Override
 	public void serverStarted() {
 		ui.addStatus("server started");
-		
+		ui.serverStarted();
 	}
 
 	@Override
 	public void serverListening() {
-		ui.addStatus("server listening");
+		ui.addStatus("server listening for incoming connections");
 		
 	}
 
 	@Override
 	public void serverStopped() {
 		ui.addStatus("server stopped");
+		ui.serverStopped();
 		
 	}
 
 	@Override
 	public void serverException(Exception e) {
 		ui.addStatus(e.getMessage());
+		
+	}
+	@Override
+	public void serverAccept() {
+		ui.addStatus("server accept connection");
 		
 	}
 

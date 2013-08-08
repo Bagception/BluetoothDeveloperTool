@@ -167,6 +167,7 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 	
 	public void addStatus(String txt){
 		this.statusText.append(txt);
+		this.statusText.append("\n");
 	}
 	
 	public void addRecv(String s){

@@ -76,12 +76,10 @@ public class BTServer implements Runnable {
 					.open("btspp://localhost:" + btservice.getServiceUUID()
 							+ ";name=" + btservice.getServiceName());
 
-			serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
-
 			while (active) {
 				try {
 					con = (StreamConnection) service.acceptAndOpen();
-					
+					serverState.notifyAllListener(BTServerStateObservable.SERVER_ACCEPT);
 					BTHandler handler = handlerFactory.createHandler(this);
 					this.handler.add(handler);
 					handler.init(con);

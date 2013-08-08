@@ -18,58 +18,61 @@ public class BTServerController {
 	private BTServerUI serverUI;
 
 	public BTServerController() {
-		
-		Vector<BluetoothService> bts = (new BluetoothService_TextLoader()).loadServices();
-		if (bts.size()==0){
-			JOptionPane.showMessageDialog(null, "No Bluetooth services found\nPlease create a bluetooth service first.", "Error", JOptionPane.ERROR_MESSAGE);
+
+		Vector<BluetoothService> bts = (new BluetoothService_TextLoader())
+				.loadServices();
+		if (bts.size() == 0) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"No Bluetooth services found\nPlease create a bluetooth service first.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		serverUI = new BTServerUI(new BTServerUIButtonController(this),bts);
-		
-		
+		serverUI = new BTServerUI(new BTServerUIButtonController(this), bts);
 	}
-	
-	
-	private void newServer(){
-	
-		//status
-		BTServerStateListener serverStateListener = new BTServerStateListenerImpl(serverUI);
 
-		//recv
-		BTObservableHandlerListenerImpl handlerListener = new BTObservableHandlerListenerImpl(serverUI);
-		BTObservableHandlerFactory handlerFactory = new BTObservableHandlerFactory(handlerListener);
-		
+	private void newServer() {
+
+		// status
+		BTServerStateListener serverStateListener = new BTServerStateListenerImpl(
+				serverUI);
+
+		// recv
+		BTObservableHandlerListenerImpl handlerListener = new BTObservableHandlerListenerImpl(
+				serverUI);
+		BTObservableHandlerFactory handlerFactory = new BTObservableHandlerFactory(
+				handlerListener);
+
 		bt_server = new BTServer(handlerFactory, serverUI.getBluetoothService());
 		bt_server.getBTServerState().addListener(serverStateListener);
-		
+
 		try {
 			bt_server.init();
+			bt_server.listen();
 		} catch (IOException | ServerAlreadyStartedException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void deleteServer(){
-		if (bt_server != null){
+
+	private void deleteServer() {
+		if (bt_server != null) {
 			bt_server.getBTServerState().removeAllListeners();
 		}
 	}
-	
-	
 
-	
-	public void startServer(){
-		
+	public void startServer() {
+
 		deleteServer();
-		newServer();		
+		newServer();
 	}
-	
-	public void stopServer(){
+
+	public void stopServer() {
 		bt_server.stop();
 	}
-	
-	public void send(){
-		
+
+	public void send() {
+
 	}
-	
+
 }
