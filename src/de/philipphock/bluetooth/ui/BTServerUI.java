@@ -19,7 +19,6 @@ import javax.swing.border.TitledBorder;
 
 import de.philipphock.bluetooth.controller.BTServerUIActionCommands;
 import de.philipphock.bluetooth.controller.BTServerUIButtonController;
-import de.philipphock.bluetooth.core.mvc.listener.BTServerStateListener;
 import de.philipphock.bluetooth.service.BluetoothService;
 
 

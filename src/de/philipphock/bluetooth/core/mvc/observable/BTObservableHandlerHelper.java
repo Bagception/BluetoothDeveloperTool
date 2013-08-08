@@ -1,7 +1,6 @@
 package de.philipphock.bluetooth.core.mvc.observable;
 
 import de.philipphock.bluetooth.core.mvc.listener.BTObservableHandlerListener;
-import de.philipphock.bluetooth.coreImpl.BTObservableHandler;
 import de.philipphock.lib.GenericObservable;
 
 

@@ -8,17 +8,15 @@ import de.philipphock.bluetooth.core.BTServer;
 import de.philipphock.bluetooth.core.mvc.listener.BTObservableHandlerListenerImpl;
 import de.philipphock.bluetooth.core.mvc.listener.BTServerStateListener;
 import de.philipphock.bluetooth.core.mvc.listener.BTServerStateListenerImpl;
-import de.philipphock.bluetooth.coreImpl.BTObservableHandler;
 import de.philipphock.bluetooth.coreImpl.BTObservableHandlerFactory;
 import de.philipphock.bluetooth.exceptions.ServerAlreadyStartedException;
 import de.philipphock.bluetooth.service.BluetoothService;
 import de.philipphock.bluetooth.ui.BTServerUI;
+
 public class BTServerController {
 	private BTServer bt_server;
 	private BTServerUI serverUI;
-	private BTServerStateListener serverStateListener;
-	private BTObservableHandlerListenerImpl handlerListener;
-	private BTObservableHandlerFactory handlerFactory;
+
 	public BTServerController() {
 		
 		Vector<BluetoothService> bts = (new BluetoothService_TextLoader()).loadServices();

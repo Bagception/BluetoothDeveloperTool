@@ -4,7 +4,6 @@ import de.philipphock.bluetooth.core.BTHandler;
 import de.philipphock.bluetooth.core.BTHandlerFactory;
 import de.philipphock.bluetooth.core.BTServer;
 import de.philipphock.bluetooth.core.mvc.listener.BTObservableHandlerListenerImpl;
-import de.philipphock.bluetooth.ui.BTServerUI;
 
 public class BTObservableHandlerFactory implements BTHandlerFactory{
 
