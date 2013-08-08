@@ -24,7 +24,7 @@ public class BTServerUIButtonController implements ActionListener{
 				break;
 				
 			case BTServerUIActionCommands.SEND:
-				mainController.startServer();
+				mainController.send();
 				break;
 		}
 		

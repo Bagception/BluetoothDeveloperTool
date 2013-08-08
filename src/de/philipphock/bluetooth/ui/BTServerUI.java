@@ -183,5 +183,14 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 		startStopServerButton.setText("Start stop");
 		startStopServerButton.setActionCommand(BTServerUIActionCommands.SERVER_STOP);
 	}
+	
+	public String getSendMessage(){
+		String ret = this.sendText.getText();
+		clearSendMessage();
+		return ret;
+	}
+	public void clearSendMessage(){
+		this.sendText.setText("");
+	}
 
 }

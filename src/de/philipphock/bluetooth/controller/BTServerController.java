@@ -72,7 +72,7 @@ public class BTServerController {
 	}
 
 	public void send() {
-
+		bt_server.broadCast(serverUI.getSendMessage());
 	}
 
 }
