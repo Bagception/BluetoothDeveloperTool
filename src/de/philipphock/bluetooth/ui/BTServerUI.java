@@ -32,6 +32,8 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 	private final JTextArea recvText;
 	private final JTextArea sendText;	
 	private final JList<BluetoothService> btserviceList;
+	private final JButton startStopServerButton;
+
 	
 	public BTServerUI(BTServerUIButtonController buttoncontroller,Vector<BluetoothService> btservices) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,10 +91,10 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 				JPanel controlPanel = new JPanel();
 				TitledBorder controlBorder = BorderFactory.createTitledBorder("Server Control");
 				controlPanel.setBorder(controlBorder);
-				JButton startServerButton = new JButton("start server");
-				startServerButton.addActionListener(buttoncontroller);
-				startServerButton.setActionCommand(BTServerUIActionCommands.SERVER_START);
-				controlPanel.add(startServerButton);
+				startStopServerButton = new JButton("start server");
+				startStopServerButton.addActionListener(buttoncontroller);
+				startStopServerButton.setActionCommand(BTServerUIActionCommands.SERVER_START);
+				controlPanel.add(startStopServerButton);
 				
 				left.add(controlPanel);
 			}
@@ -167,6 +169,19 @@ public class BTServerUI extends JFrame implements BTServerUIActionCommands{
 	public void addStatus(String txt){
 		this.statusText.append(txt);
 	}
+	
+	public void addRecv(String s){
+		this.recvText.append(s);
+	}
 
+	public void serverStopped(){
+		startStopServerButton.setText("Start server");
+		startStopServerButton.setActionCommand(BTServerUIActionCommands.SERVER_START);
+	}
+	
+	public void serverStarted(){
+		startStopServerButton.setText("Start stop");
+		startStopServerButton.setActionCommand(BTServerUIActionCommands.SERVER_STOP);
+	}
 
 }

@@ -14,9 +14,9 @@ public abstract class BTHandler implements Runnable{
 	private InputStream is;
 	private OutputStream os;
 	private static int instances=0;
-	
-	public BTHandler(){
-		
+	protected final BTServer server;
+	public BTHandler(BTServer server){
+		this.server = server;
 		
 	}
 	public void init(StreamConnection con) throws IOException {
@@ -65,6 +65,7 @@ public abstract class BTHandler implements Runnable{
 		if (instances<1){
 			//Main.control.stateServerListening();
 		}
+		server.handlerShutdown(this);
 		onShutdown();
 	}
 	

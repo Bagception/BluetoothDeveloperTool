@@ -17,19 +17,19 @@ public class BTServerStateListenerImpl implements BTServerStateListener{
 
 	@Override
 	public void serverListening() {
-		// TODO Auto-generated method stub
+		ui.addStatus("server listening");
 		
 	}
 
 	@Override
 	public void serverStopped() {
-		// TODO Auto-generated method stub
+		ui.addStatus("server stopped");
 		
 	}
 
 	@Override
 	public void serverException(Exception e) {
-		// TODO Auto-generated method stub
+		ui.addStatus(e.getMessage());
 		
 	}
 

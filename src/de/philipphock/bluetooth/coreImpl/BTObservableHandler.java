@@ -2,6 +2,7 @@ package de.philipphock.bluetooth.coreImpl;
 
 
 import de.philipphock.bluetooth.core.BTHandler;
+import de.philipphock.bluetooth.core.BTServer;
 import de.philipphock.bluetooth.core.mvc.observable.BTObservableHandlerHelper;
 
 
@@ -10,7 +11,8 @@ public  class BTObservableHandler extends BTHandler  {
 	
 	private final BTObservableHandlerHelper observable;
 	
-	public BTObservableHandler()  {
+	public BTObservableHandler(BTServer server)  {
+		super(server);
 		this.observable = new BTObservableHandlerHelper();
 	}
 	
@@ -29,11 +31,6 @@ public  class BTObservableHandler extends BTHandler  {
 		send(s.getBytes());		
 	}
 
-
-	public static BTHandler getNewInstance(){
-		return new BTObservableHandler();
-	}
-	
 	
 	@Override
 	protected void onShutdown() {

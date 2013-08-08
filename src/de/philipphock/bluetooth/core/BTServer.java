@@ -1,6 +1,7 @@
 package de.philipphock.bluetooth.core;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
@@ -25,12 +26,15 @@ public class BTServer implements Runnable {
 	// private ThreadPoolExecutor threadPool;
 	private boolean alreadyStarted = false;
 
-	private BTHandlerFactory handlerFactory; 
+	private final Vector<BTHandler> handler;
+
+	private final BTHandlerFactory handlerFactory; 
 	
 	public BTServer(BTHandlerFactory handlerFactory, BluetoothService service) {
 		this.handlerFactory = handlerFactory;
 		this.btservice = service;
 		this.serverState = new BTServerStateObservable();
+		this.handler = new Vector<>();
 
 	}
 
@@ -39,13 +43,14 @@ public class BTServer implements Runnable {
 		return serverState;
 	}
 
-	public void init() throws IOException, ServerAlreadyStartedException {
+	public synchronized void init() throws IOException, ServerAlreadyStartedException {
 		if (alreadyStarted) {
 			throw new ServerAlreadyStartedException();
 		}
 		// queue = new ArrayBlockingQueue<Runnable>(10);
 		// threadPool = new ThreadPoolExecutor(1,1,10,TimeUnit.SECONDS,queue);
 		LocalDevice.getLocalDevice().setDiscoverable(DiscoveryAgent.GIAC);
+		serverState.notifyAllListener(BTServerStateObservable.SERVER_STARTED);
 		alreadyStarted = true;
 
 	}
@@ -54,10 +59,12 @@ public class BTServer implements Runnable {
 
 		Thread listenThread = new Thread(this);
 		listenThread.start();
+		serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
 	}
 
 	public void stop() {
 		// threadPool.shutdown();
+		serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
 	}
 
 	@Override
@@ -75,7 +82,8 @@ public class BTServer implements Runnable {
 				try {
 					con = (StreamConnection) service.acceptAndOpen();
 					
-					BTHandler handler = handlerFactory.createHandler();
+					BTHandler handler = handlerFactory.createHandler(this);
+					this.handler.add(handler);
 					handler.init(con);
 					// threadPool.execute(handler); //for multiple connection
 					// handles
@@ -96,4 +104,11 @@ public class BTServer implements Runnable {
 
 	}
 
+	public void handlerShutdown(BTHandler handler){
+		this.handler.remove(handler);
+	}
+	
+	public void broadCast(String s){
+		
+	}
 }
