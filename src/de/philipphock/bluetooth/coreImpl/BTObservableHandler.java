@@ -35,6 +35,7 @@ public  class BTObservableHandler extends BTHandler  {
 	
 	@Override
 	protected void onShutdown() {
+		System.out.println("handler onShutdown");
 		observable.notifyAllListener(BTObservableHandlerHelper.CONNECTION_LOST);
 		observable.removeAllListeners();
 		

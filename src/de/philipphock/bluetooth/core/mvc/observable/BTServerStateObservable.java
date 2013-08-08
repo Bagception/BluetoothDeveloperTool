@@ -8,10 +8,9 @@ public class BTServerStateObservable extends GenericObservable<BTServerStateList
 	public final static int SERVER_STARTED=1;
 	public final static int SERVER_ACCEPT=2;
 	public final static int SERVER_STOPPED=4;
-	
 	public final static int SERVER_ERROR=8;
 	public final static int SERVER_LISTENING=16;
-		
+	public final static int SERVER_WAITING=32;	
 
 	@Override
 	protected void onNotify(BTServerStateListener listener, int event, Object o) {
@@ -34,7 +33,9 @@ public class BTServerStateObservable extends GenericObservable<BTServerStateList
 		if ((SERVER_ERROR & event)>0){
 			listener.serverException((Exception) o);
 		}	
-		
+		if ((SERVER_WAITING & event)>0){
+			listener.serverWaiting();
+		}	
 		
 	}
 

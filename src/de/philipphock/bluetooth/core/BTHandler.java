@@ -60,7 +60,7 @@ public abstract class BTHandler implements Runnable{
 	
 	private synchronized void shutdown(){
 		instances--;
-		
+		System.out.println("handler shutdown");
 		if (instances<1){
 			//Main.control.stateServerListening();
 		}
@@ -77,11 +77,13 @@ public abstract class BTHandler implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
+		System.out.println("sending "+new String(b));
+
 	}
 	
 	public synchronized void stop(){
 		listening=false;
+		
 		try {
 			
 			is.close();
@@ -89,6 +91,8 @@ public abstract class BTHandler implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("handler stopping");
+
 	}
 	
 

@@ -6,6 +6,6 @@ public interface BTServerStateListener {
 	public void serverListening();
 	public void serverAccept();
 	public void serverStopped();
-	
+	public void serverWaiting();
 	public void serverException(Exception e);
 }

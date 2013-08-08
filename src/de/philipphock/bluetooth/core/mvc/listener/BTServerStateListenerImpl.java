@@ -38,5 +38,10 @@ public class BTServerStateListenerImpl implements BTServerStateListener{
 		ui.addStatus("server accept connection");
 		
 	}
+	@Override
+	public void serverWaiting() {
+		ui.addStatus("server waiting for connection");
+		
+	}
 
 }

@@ -1,6 +1,5 @@
 package de.philipphock.bluetooth.controller;
 
-import java.io.IOException;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 
@@ -50,7 +49,7 @@ public class BTServerController {
 		try {
 			bt_server.init();
 			bt_server.listen();
-		} catch (IOException | ServerAlreadyStartedException e) {
+		} catch (ServerAlreadyStartedException e) {
 			e.printStackTrace();
 			serverUI.addStatus(e.getMessage());
 		}

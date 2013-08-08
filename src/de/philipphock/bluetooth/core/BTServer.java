@@ -20,7 +20,7 @@ public class BTServer implements Runnable {
 
 	private boolean active = true;
 	private StreamConnection con;
-
+	private StreamConnectionNotifier streamConnectionNotifier;
 	private final BluetoothService btservice;
 
 	// private ThreadPoolExecutor threadPool;
@@ -29,7 +29,7 @@ public class BTServer implements Runnable {
 	private final Vector<BTHandler> handler;
 
 	private final BTHandlerFactory handlerFactory; 
-	
+	private Thread listenThread;
 	public BTServer(BTHandlerFactory handlerFactory, BluetoothService service) {
 		this.handlerFactory = handlerFactory;
 		this.btservice = service;
@@ -43,7 +43,7 @@ public class BTServer implements Runnable {
 		return serverState;
 	}
 
-	public synchronized void init() throws IOException, ServerAlreadyStartedException {
+	public synchronized void init() throws  ServerAlreadyStartedException {
 		if (alreadyStarted) {
 			throw new ServerAlreadyStartedException();
 		}
@@ -62,33 +62,45 @@ public class BTServer implements Runnable {
 
 	public void listen() {
 
-		Thread listenThread = new Thread(this);
+		listenThread = new Thread(this);
+		listenThread.setDaemon(true);
 		listenThread.start();
-		serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
+		
 	}
 
 	@SuppressWarnings("unchecked")
 	public void stop() {
+		System.out.println("try to stop");
 		// threadPool.shutdown();
-		serverState.notifyAllListener(BTServerStateObservable.SERVER_STOPPED);
+		
 		Vector<BTHandler> clonedHander =(Vector<BTHandler>) this.handler.clone();
 		for(BTHandler h:clonedHander){
 			h.stop();
+		}
+		active = false;
+		
+		try {
+			streamConnectionNotifier.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void run() {
-		StreamConnectionNotifier service;
+		serverState.notifyAllListener(BTServerStateObservable.SERVER_LISTENING);
+		
+		
 
 		try {
-			service = (StreamConnectionNotifier) Connector
+			streamConnectionNotifier = (StreamConnectionNotifier) Connector
 					.open("btspp://localhost:" + btservice.getServiceUUID()
 							+ ";name=" + btservice.getServiceName());
 
 			while (active) {
 				try {
-					con = (StreamConnection) service.acceptAndOpen();
+					serverState.notifyAllListener(BTServerStateObservable.SERVER_WAITING);
+					con = (StreamConnection) streamConnectionNotifier.acceptAndOpen();
 					serverState.notifyAllListener(BTServerStateObservable.SERVER_ACCEPT);
 					BTHandler handler = handlerFactory.createHandler(this);
 					this.handler.add(handler);
@@ -98,7 +110,7 @@ public class BTServer implements Runnable {
 					// handler.run();
 
 					handler.run();
-
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -113,6 +125,7 @@ public class BTServer implements Runnable {
 	}
 
 	public void handlerShutdown(BTHandler handler){
+		System.out.println("handler removed "+handler);
 		this.handler.remove(handler);
 	}
 	
