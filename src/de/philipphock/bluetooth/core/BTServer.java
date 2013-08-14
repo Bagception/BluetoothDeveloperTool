@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
+import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -61,7 +62,7 @@ public class BTServer implements Runnable {
 	}
 
 	public void listen() {
-
+		System.out.println("Server now listening");
 		listenThread = new Thread(this);
 		listenThread.setDaemon(true);
 		listenThread.start();
@@ -95,14 +96,19 @@ public class BTServer implements Runnable {
 		
 
 		try {
+			
+			
+			String uri = "btspp://localhost:" + new UUID(btservice.getServiceUUID(),false).toString()
+					+ ";name=" + btservice.getServiceName()+";authenticate=false;encrypt=false;master=false";
 			streamConnectionNotifier = (StreamConnectionNotifier) Connector
-					.open("btspp://localhost:" + btservice.getServiceUUID()
-							+ ";name=" + btservice.getServiceName());
-
+					.open(uri);
+			System.out.println(uri);
 			while (active) {
 				try {
 					serverState.notifyAllListener(BTServerStateObservable.SERVER_WAITING);
+					System.out.println("waiting");
 					con = (StreamConnection) streamConnectionNotifier.acceptAndOpen();
+					System.out.println("accepted");
 					serverState.notifyAllListener(BTServerStateObservable.SERVER_ACCEPT);
 					BTHandler handler = handlerFactory.createHandler(this);
 					this.handler.add(handler);
@@ -110,9 +116,9 @@ public class BTServer implements Runnable {
 					// threadPool.execute(handler); //for multiple connection
 					// handles
 					// handler.run();
-
+					System.out.println("handler init");
 					handler.run();
-					
+					System.out.println("handler done");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
